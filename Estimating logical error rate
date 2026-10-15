@@ -1,0 +1,25 @@
+# 4. Estimate the logical error rate
+def logical_error_rate(p, shots=10_000, bit=0):
+    qc = build_circuit(bit)
+    sim = AerSimulator(noise_model=make_noise(p))
+    counts = sim.run(qc, shots=shots).result().get_counts()
+
+    failures = 0
+
+    for key, count in counts.items():
+        b = key[::-1]
+
+        data = [int(b[i]) for i in range(3)]
+        s0, s1 = int(b[3]), int(b[4])
+
+        error_qubit = decode(s0, s1)
+
+        if error_qubit is not None:
+            data[error_qubit] ^= 1
+
+        decoded_bit = int(sum(data) >= 2)
+
+        if decoded_bit != bit:
+            failures += count
+
+    return failures / shots
