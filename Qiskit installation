@@ -1,0 +1,8 @@
+%pip install qiskit qiskit-aer matplotlib
+
+import qiskit
+import qiskit_aer
+import numpy as np
+print("Qiskit:", qiskit.__version__)
+print("Qiskit Aer:", qiskit_aer.__version__)
+print("NumPy:", np.__version__)
