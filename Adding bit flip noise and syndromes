@@ -1,0 +1,12 @@
+# 2. Add random bit-flip noise
+def make_noise(p):
+    noise = NoiseModel()
+    error = pauli_error([("X", p), ("I", 1 - p)])
+    noise.add_all_qubit_quantum_error(error, ["id"])
+    return noise
+
+
+# 3. Decode the syndrome
+def decode(s0, s1):
+    return {(0, 0): None, (1, 0): 0,
+            (1, 1): 1, (0, 1): 2}[(s0, s1)]
